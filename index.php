@@ -62,14 +62,11 @@ if(isset($_POST['method']) && ($_POST['method'] === 'put')){
 <html>
 <head>
 <meta charset="utf-8">
-<title>Todoリスト</title>
+<title>likes</title>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
-<meta charset="utf-8">
-<title>Todoリスト</title>
-</head>
 <body>
-<h1>Todoリスト</h1>
+<h1>likes</h1>
 <?php
 if(isset($errors)){
     print("<ul>");
@@ -83,8 +80,21 @@ if(isset($errors)){
 ?>
 <form action="index.php" method="post" id="form">
 <ul>
-    <li><span>タスク名</span><input type="text" name="name" value="<?php if (isset($name)){ print($name); } ?>"</li>
+    <li><span>作品タイトル</span><input type="text" name="name" value="<?php if (isset($name)){ print($name); } ?>"</li>
+
     <li><span>メモ</span><textarea name="memo"><?php if(isset($memo)) { print($memo); } ?></textarea></li>
+
+    <li><span>カテゴリ</span><select name="example1">
+    	<option value="<?php if (isset($name)){ print($name); } ?>">音楽</option>
+		<option value="<?php if (isset($name)){ print($name); } ?>">漫画</option>
+		<option value="<?php if (isset($name)){ print($name); } ?>">アニメ</option>
+		<option value="<?php if (isset($name)){ print($name); } ?>">スポーツ</option>
+		<option value="<?php if (isset($name)){ print($name); } ?>">ファッション</option>
+		</select>
+    	</li>
+
+    <li><span>いつからハマった</span><input type="date" name="name" value="<?php if (isset($created)){ print($created); } ?>"</li>
+
     <li><input type="submit" name="submit"></li>
 </ul>
 </form>
