@@ -80,16 +80,16 @@ if(isset($errors)){
 ?>
 <form action="index.php" method="post" id="form">
 <ul>
-    <li><span>作品タイトル</span><input type="text" name="name" value="<?php if (isset($name)){ print($name); } ?>"</li>
+    <li><span>タイトル</span><input type="text" name="name" value="<?php if (isset($name)){ print($name); } ?>"</li>
 
     <li><span>メモ</span><textarea name="memo"><?php if(isset($memo)) { print($memo); } ?></textarea></li>
 
     <li><span>カテゴリ</span><select name="example1">
-    	<option value="<?php if (isset($name)){ print($name); } ?>">音楽</option>
-		<option value="<?php if (isset($name)){ print($name); } ?>">漫画</option>
-		<option value="<?php if (isset($name)){ print($name); } ?>">アニメ</option>
-		<option value="<?php if (isset($name)){ print($name); } ?>">スポーツ</option>
-		<option value="<?php if (isset($name)){ print($name); } ?>">ファッション</option>
+    	<option value="0">音楽</option>
+		<option value="1">漫画</option>
+		<option value="2">アニメ</option>
+		<option value="3">スポーツ</option>
+		<option value="4">ファッション</option>
 		</select>
     	</li>
 
