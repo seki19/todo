@@ -5,19 +5,19 @@ h1 {
 	color: #008000;
 }
 body {
-	background-color: gray;
+	
 	width:350px;
 	padding: 20px;
 } 
 div {
 	background-color: white;
-	opacity: 0.3;
+	
 	}
 
 #list{
 	margin:20px;
-	background-color: gray;
-	opacity: 0.7;
+	
+	
 }
 
 #form{

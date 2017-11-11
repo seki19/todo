@@ -1,40 +1,52 @@
 <?php
 
+//DB接続関数
 require_once("function.php");
 $errors = array();
 
 if(isset($_POST['submit'])){
     
+    //$_postに格納されている値を変数に代入する
     $name = $_POST['name'];
     $memo = $_POST['memo'];
+    $created = $_POST['created'];
+    $category_id = $_POST['category_id'];
 
     $name = htmlspecialchars($name, ENT_QUOTES);
     $memo = htmlspecialchars($memo, ENT_QUOTES);
+    $created = htmlspecialchars($created, ENT_QUOTES);
+    $category_id = htmlspecialchars((int)$category_id, ENT_QUOTES);
 
     if($name === ''){
-        $errors['name'] = 'お名前が入力されていません。';
+        $errors['name'] = 'タイトルが入力されていません。';
     }
 
     if($memo === ''){
         $errors['memo'] = 'メモが入力されていません。';
+    }
+
+    if($created === ''){
+        $errors['created'] = 'ハマった日付が入力されていません。';
     }
     
     if(count($errors) === 0){
         
     	$dbh = db_connect();
 
-        $sql = 'INSERT INTO task (name, memo, done) VALUES (?, ?, 0)';
+        $sql = 'INSERT INTO task (name, memo, done ,created , category_id) VALUES (?, ?, 0, ?, ?)';
         $stmt = $dbh->prepare($sql);
 
         
         $stmt->bindValue(1, $name, PDO::PARAM_STR);
         $stmt->bindValue(2, $memo, PDO::PARAM_STR);
+        $stmt->bindValue(3, $created, PDO::PARAM_STR);
+        $stmt->bindValue(4, $category_id, PDO::PARAM_STR);
 
         $stmt->execute();
 
         $dbh = null;
 
-        unset($name, $memo);
+        unset($name, $memo, $created);
     }
 }
 
@@ -84,16 +96,16 @@ if(isset($errors)){
 
     <li><span>メモ</span><textarea name="memo"><?php if(isset($memo)) { print($memo); } ?></textarea></li>
 
-    <li><span>カテゴリ</span><select name="example1">
+    <li><span>カテゴリ</span><select name="category_id">
     	<option value="0">音楽</option>
 		<option value="1">漫画</option>
 		<option value="2">アニメ</option>
 		<option value="3">スポーツ</option>
 		<option value="4">ファッション</option>
 		</select>
-    	</li>
+    </li>
 
-    <li><span>いつからハマった</span><input type="date" name="name" value="<?php if (isset($created)){ print($created); } ?>"</li>
+    <li><span>いつからハマった</span><input type="date" name="created" value="<?php if (isset($created)){ print($created); } ?>"</li>
 
     <li><input type="submit" name="submit"></li>
 </ul>
@@ -102,7 +114,7 @@ if(isset($errors)){
 	
 	$dbh = db_connect();
 
-	$sql = 'SELECT id, name, memo FROM task WHERE done = 0 ORDER BY id DESC';
+	$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 ORDER BY id DESC';
 	$stmt = $dbh->prepare($sql);
 	$stmt->execute();
 	$dbh = null;
@@ -118,6 +130,15 @@ if(isset($errors)){
 
 		    print '<dd>';
 		    print $task["memo"];
+		    print '</dd>';
+
+		    print '<dd>';
+		    print $task["category_id"];
+		    print '</dd>';
+
+		    print '<dd>';
+		    print '<p>ハマった日</p>';
+		    print $task["created"];
 		    print '</dd>';
 
 		    print '<dd>';
