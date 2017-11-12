@@ -111,23 +111,37 @@ if(isset($errors)){
     <li><input type="submit" name="submit"></li>
 </ul>
 </form>
+
 <span>現在ハマっているもの</span>
-<select name="category_id">
-		<option value="10">全件</option>
-    	<option value="0">音楽</option>
-    	<option value="1">映画</option>
-		<option value="2">漫画</option>
-		<option value="3">アニメ</option>
-		<option value="4">スポーツ</option>
-		<option value="5">ファッション</option>
-</select>
- 
+<form method="post">
+	<select name="category_list">
+			<option value="10">全件</option>
+	    	<option value="0">音楽</option>
+	    	<option value="1">映画</option>
+			<option value="2">漫画</option>
+			<option value="3">アニメ</option>
+			<option value="4">スポーツ</option>
+			<option value="5">ファッション</option>
+	</select>
+ 	<input type="submit" value="表示"/>
+ </form>
 <?php
 	
-
 	$dbh = db_connect();
+	if(isset($_POST['category_list'])){
+		$category = (int)$_POST['category_list'];
+		var_dump($category);
+		if($category === 10){
+			$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 ORDER BY id DESC';
+		}else{
+		$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 AND category_id = "$category" ORDER BY id DESC';
+		}
 
-	$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 ORDER BY id DESC';
+	}else {
+		$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 ORDER BY id DESC';
+	}
+
+
 	$stmt = $dbh->prepare($sql);
 	$stmt->execute();
 	$dbh = null;
