@@ -75,7 +75,7 @@ if(isset($_POST['method']) && ($_POST['method'] === 'put')){
 <head>
 <meta charset="utf-8">
 <title>likes</title>
-<link rel="stylesheet" type="text/css" href="style.css">
+<!--<link rel="stylesheet" type="text/css" href="style.css">-->
 </head>
 <body>
 <h1>likes</h1>
@@ -98,10 +98,11 @@ if(isset($errors)){
 
     <li><span>カテゴリ</span><select name="category_id">
     	<option value="0">音楽</option>
-		<option value="1">漫画</option>
-		<option value="2">アニメ</option>
-		<option value="3">スポーツ</option>
-		<option value="4">ファッション</option>
+    	<option value="1">映画</option>
+		<option value="2">漫画</option>
+		<option value="3">アニメ</option>
+		<option value="4">スポーツ</option>
+		<option value="5">ファッション</option>
 		</select>
     </li>
 
@@ -110,8 +111,20 @@ if(isset($errors)){
     <li><input type="submit" name="submit"></li>
 </ul>
 </form>
+<span>現在ハマっているもの</span>
+<select name="category_id">
+		<option value="10">全件</option>
+    	<option value="0">音楽</option>
+    	<option value="1">映画</option>
+		<option value="2">漫画</option>
+		<option value="3">アニメ</option>
+		<option value="4">スポーツ</option>
+		<option value="5">ファッション</option>
+</select>
+ 
 <?php
 	
+
 	$dbh = db_connect();
 
 	$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 ORDER BY id DESC';
@@ -133,11 +146,36 @@ if(isset($errors)){
 		    print '</dd>';
 
 		    print '<dd>';
-		    print $task["category_id"];
+		    print 'カテゴリー:';
+		    switch ($task["category_id"]) {
+		    	case '0':
+		    		print "音楽";
+		    		break;
+		    	
+		    	case '1':
+		    		print "映画";
+		    		break;
+
+		    	case '2':
+		    		print "漫画";
+		    		break;
+
+		    	case '3':
+		    		print "アニメ";
+		    		break;
+
+		    	case '4':
+		    		print "スポーツ";
+		    		break;
+
+		    	case '5':
+		    		print "ファッション";
+		    		break;
+		    }
 		    print '</dd>';
 
 		    print '<dd>';
-		    print '<p>ハマった日</p>';
+		    print 'ハマった日:';
 		    print $task["created"];
 		    print '</dd>';
 
@@ -146,7 +184,7 @@ if(isset($errors)){
 		            <form action="index.php" method="post">
 		            <input type="hidden" name="method" value="put">
 		            <input type="hidden" name="id" value="' . $task['id'] . '">
-		            <button type="submit">済んだ</button>
+		            <button type="submit">飽きた</button>
 		            </form>
 		          ' ;
 		    print '</dd>';
