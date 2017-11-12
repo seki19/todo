@@ -51,7 +51,7 @@ if(isset($_POST['submit'])){
 }
 
 if(isset($_POST['method']) && ($_POST['method'] === 'put')){
-	var_dump($_POST['finished']);
+	//var_dump($_POST['finished']);
     if($_POST['finished'] !== ""){
 	    $id = $_POST["id"];
 	    $id = htmlspecialchars($id, ENT_QUOTES);
@@ -122,8 +122,8 @@ if(isset($errors)){
 </ul>
 </form>
 
-<span>現在ハマっているもの</span>
 <form method="post">
+	<span>現在ハマっているもの:</span>
 	<select  action="index.php" name="category_list">
 			<option value="10">全件</option>
 	    	<option value="0">音楽</option>
@@ -133,32 +133,70 @@ if(isset($errors)){
 			<option value="4">スポーツ</option>
 			<option value="5">ファッション</option>
 	</select>
+	<input type="submit" value="表示"/>
+</form>
+ <form method="post">	
+ <span>年代別:</span>
+	<select  action="index.php" name="age_list">
+			<option value="10">全年代</option>
+	    	<option value="0">小学校まで</option>
+	    	<option value="1">中学校</option>
+			<option value="2">高校</option>
+			<option value="3">専門・大学</option>
+			<option value="4">社会人</option>		
+	</select>
  	<input type="submit" value="表示"/>
  </form>
+
 <?php
 	
 	$dbh = db_connect();
+
+	
+	//カテゴリごとの表示
 	if(isset($_POST['category_list'])){
 		$category = (int)$_POST['category_list'];
 		//var_dump($category);
 		if($category === 10){
-			$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 ORDER BY id DESC';
+			$sql = 'SELECT id, name, memo, category_id, created, finished FROM task WHERE done = 0 ORDER BY id DESC';
 		}else{
-		//	var_dump($category);
-			$sql = "SELECT id, name, memo, category_id, created FROM task WHERE done = 0 AND category_id = $category ORDER BY id DESC";
-			var_dump($sql);
+			$sql = "SELECT id, name, memo, category_id, created, finished FROM task WHERE done = 0 AND category_id = $category ORDER BY id DESC";
+		//	var_dump($sql);
 			
-			//var_dump($category);
-        	//$stmt->bindValue(1, $category, PDO::PARAM_STR);
-        	//$stmt->execute();
-        	
 		}
 
 	}else {
-		$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 ORDER BY id DESC';
+		$sql = 'SELECT id, name, memo, category_id, created, finished FROM task WHERE done = 0 ORDER BY id DESC';
 	}
 
-
+	//年代別の表示
+	if(isset($_POST['age_list'])){
+		
+			$age_list = (int)$_POST['age_list'];
+			//var_dump($age_list);
+			switch ($age_list) {
+				case '10':
+					$sql = "SELECT id, name, memo, category_id, created, finished FROM task WHERE created >= '1996-03-06' AND created < '2020-12-30'  ORDER BY id DESC";
+					break;
+				case '0':
+						$sql = "SELECT id, name, memo, category_id, created, finished FROM task WHERE created >= '1996-03-06' AND created < '2008-4-01'  ORDER BY id DESC";
+					break;
+				case '1':
+						$sql = "SELECT id, name, memo, category_id, created, finished FROM task WHERE created >= '2008-4-01' AND created < '2011-4-01'  ORDER BY id DESC";
+					break;
+				case '2':
+					$sql = "SELECT id, name, memo, category_id, created,finished FROM task WHERE created >= '2011-4-01' AND created < '2014-4-01'  ORDER BY id DESC";
+					break;
+				case '3':
+					$sql = "SELECT id, name, memo, category_id, created,finished FROM task WHERE created >= '2014-4-01' AND created < '2016-4-01'  ORDER BY id DESC";
+					break;
+				case '4':
+					$sql = "SELECT id, name, memo, category_id, created,finished FROM task WHERE created >= '2016-4-01' ORDER BY id DESC";
+					break;
+			}
+			unset($_POST['age_list']);
+		}
+	
 	$stmt = $dbh->prepare($sql);
 	$stmt->execute();
 	$dbh = null;
@@ -211,7 +249,8 @@ if(isset($errors)){
 		    print '</dd>';
 
 		    print '<dd>';
-		    print '
+		    if($task['finished'] === "0000-00-00"){
+		    	print '
 		            <form action="index.php" method="post">
 		            <input type="hidden" name="method" value="put">
 		            <input type="hidden" name="id" value="' . $task['id'] . '">
@@ -219,6 +258,10 @@ if(isset($errors)){
 		            <button type="submit">飽きた</button>
 		            </form>
 		          ' ;
+		      }else{
+		      	print '飽きた日:';
+		      	print $task["finished"];
+		      }
 		    print '</dd>';
 
 		    print '<hr>';
