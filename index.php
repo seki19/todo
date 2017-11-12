@@ -43,7 +43,7 @@ if(isset($_POST['submit'])){
         $stmt->bindValue(4, $category_id, PDO::PARAM_STR);
 
         $stmt->execute();
-
+        var_dump($stmt);
         $dbh = null;
 
         unset($name, $memo, $created);
@@ -64,7 +64,7 @@ if(isset($_POST['method']) && ($_POST['method'] === 'put')){
     
     $stmt->bindValue(1, $id, PDO::PARAM_INT);
     $stmt->execute();
-
+    var_dump($stmt);
     $dbh = null;
 
 }
@@ -114,7 +114,7 @@ if(isset($errors)){
 
 <span>現在ハマっているもの</span>
 <form method="post">
-	<select name="category_list">
+	<select  action="index.php" name="category_list">
 			<option value="10">全件</option>
 	    	<option value="0">音楽</option>
 	    	<option value="1">映画</option>
@@ -130,11 +130,18 @@ if(isset($errors)){
 	$dbh = db_connect();
 	if(isset($_POST['category_list'])){
 		$category = (int)$_POST['category_list'];
-		var_dump($category);
+		//var_dump($category);
 		if($category === 10){
 			$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 ORDER BY id DESC';
 		}else{
-		$sql = 'SELECT id, name, memo, category_id, created FROM task WHERE done = 0 AND category_id = "$category" ORDER BY id DESC';
+		//	var_dump($category);
+			$sql = "SELECT id, name, memo, category_id, created FROM task WHERE done = 0 AND category_id = $category ORDER BY id DESC";
+			var_dump($sql);
+			
+			//var_dump($category);
+        	//$stmt->bindValue(1, $category, PDO::PARAM_STR);
+        	//$stmt->execute();
+        	
 		}
 
 	}else {
