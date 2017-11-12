@@ -43,7 +43,7 @@ if(isset($_POST['submit'])){
         $stmt->bindValue(4, $category_id, PDO::PARAM_STR);
 
         $stmt->execute();
-        var_dump($stmt);
+        
         $dbh = null;
 
         unset($name, $memo, $created);
@@ -51,21 +51,29 @@ if(isset($_POST['submit'])){
 }
 
 if(isset($_POST['method']) && ($_POST['method'] === 'put')){
-    
-    $id = $_POST["id"];
-    $id = htmlspecialchars($id, ENT_QUOTES);
-    $id = (int)$id;
+	var_dump($_POST['finished']);
+    if($_POST['finished'] !== ""){
+	    $id = $_POST["id"];
+	    $id = htmlspecialchars($id, ENT_QUOTES);
+	    $id = (int)$id;
 
-    $dbh = db_connect();
+	    $finished = $_POST["finished"];
+	    $finished = htmlspecialchars($finished, ENT_QUOTES);
+	    
 
-    $sql = 'UPDATE task SET done = 1  WHERE id = ?';
-    $stmt = $dbh->prepare($sql);
-    
-    
-    $stmt->bindValue(1, $id, PDO::PARAM_INT);
-    $stmt->execute();
-    var_dump($stmt);
-    $dbh = null;
+	    $dbh = db_connect();
+
+	    $sql = "UPDATE task SET done = 1, finished = '$finished' WHERE id = ?";
+	    $stmt = $dbh->prepare($sql);
+	    
+	    
+	    $stmt->bindValue(1, $id, PDO::PARAM_INT);
+	    $stmt->execute();
+	    
+	    $dbh = null;
+	}else{
+		$errors['finished'] = '飽きた日付が入力されていません。';
+	}
 
 }
 
@@ -84,7 +92,9 @@ if(isset($errors)){
     print("<ul>");
     foreach($errors as $value){
         print("<li>");
+        print('!!');
         print($value);
+        print('!!');
         print("</li>");
     }
     print("</ul>");
@@ -99,8 +109,8 @@ if(isset($errors)){
     <li><span>カテゴリ</span><select name="category_id">
     	<option value="0">音楽</option>
     	<option value="1">映画</option>
-		<option value="2">漫画</option>
-		<option value="3">アニメ</option>
+		<option value="2">書籍</option>
+		<option value="3">アニメ、ゲーム</option>
 		<option value="4">スポーツ</option>
 		<option value="5">ファッション</option>
 		</select>
@@ -118,8 +128,8 @@ if(isset($errors)){
 			<option value="10">全件</option>
 	    	<option value="0">音楽</option>
 	    	<option value="1">映画</option>
-			<option value="2">漫画</option>
-			<option value="3">アニメ</option>
+			<option value="2">書籍</option>
+			<option value="3">アニメ、ゲーム</option>
 			<option value="4">スポーツ</option>
 			<option value="5">ファッション</option>
 	</select>
@@ -178,11 +188,11 @@ if(isset($errors)){
 		    		break;
 
 		    	case '2':
-		    		print "漫画";
+		    		print "書籍";
 		    		break;
 
 		    	case '3':
-		    		print "アニメ";
+		    		print "アニメ、ゲーム";
 		    		break;
 
 		    	case '4':
@@ -205,6 +215,7 @@ if(isset($errors)){
 		            <form action="index.php" method="post">
 		            <input type="hidden" name="method" value="put">
 		            <input type="hidden" name="id" value="' . $task['id'] . '">
+		            <input type="date" name="finished" value="<?php if (isset($finished)){ print($finished); } ?>">
 		            <button type="submit">飽きた</button>
 		            </form>
 		          ' ;
