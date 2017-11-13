@@ -1,26 +1,8 @@
-h1 {
-	background-color: white;
-	opacity: 0.7;
-	text-align:center
-	color: #008000;
+ul li {
+    list-style: none;
 }
-body {
-	
-	width:350px;
-	padding: 20px;
-} 
-div {
-	background-color: white;
-	
-	}
-
-#list{
-	margin:20px;
-	
-	
-}
-
-#form{
-	background-color: white;
-	
+label {
+    margin-right: 10px;
+    width:100px;
+    float: left;
 }

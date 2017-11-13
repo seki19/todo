@@ -83,11 +83,15 @@ if(isset($_POST['method']) && ($_POST['method'] === 'put')){
 <head>
 <meta charset="utf-8">
 <title>likes</title>
-<!--<link rel="stylesheet" type="text/css" href="style.css">-->
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 <h1>likes</h1>
+<p>好きなもの、好きだったもの</p>
+<hr>
+
 <?php
+
 if(isset($errors)){
     print("<ul>");
     foreach($errors as $value){
@@ -100,13 +104,20 @@ if(isset($errors)){
     print("</ul>");
 }
 ?>
+<div div style=”border-style: solid ; border-width: 1px; padding: 10px 5px 10px 20px;”>
 <form action="index.php" method="post" id="form">
 <ul>
-    <li><span>タイトル</span><input type="text" name="name" value="<?php if (isset($name)){ print($name); } ?>"</li>
+    <li>
+    	<label for="name">タイトル</label>
+    	<input type="text" name="name" value="<?php if (isset($name)){ print($name); } ?>"></li>
 
-    <li><span>メモ</span><textarea name="memo"><?php if(isset($memo)) { print($memo); } ?></textarea></li>
+    <li>
+    	<label for="memo">メモ</label>
+    	<textarea name="memo"><?php if(isset($memo)) { print($memo); } ?></textarea></li>
 
-    <li><span>カテゴリ</span><select name="category_id">
+    <li>
+    	<label for="category">カテゴリ</label>
+    	<select name="category_id">
     	<option value="0">音楽</option>
     	<option value="1">映画</option>
 		<option value="2">書籍</option>
@@ -116,11 +127,12 @@ if(isset($errors)){
 		</select>
     </li>
 
-    <li><span>いつからハマった</span><input type="date" name="created" value="<?php if (isset($created)){ print($created); } ?>"</li>
+    <li><label for="created">いつからハマったか</label><input type="date" name="created" value="<?php if (isset($created)){ print($created); } ?>"</li>
 
     <li><input type="submit" name="submit"></li>
 </ul>
 </form>
+</div>
 
 <form method="post">
 	<span>現在ハマっているもの:</span>
