@@ -1,8 +1,38 @@
 ul li {
     list-style: none;
+    margin-top: 10px;
 }
+
+ul li.msg {
+    margin-bottom: 40px;
+}
+
 label {
     margin-right: 10px;
     width:100px;
     float: left;
+}
+
+ul {
+    width: 500px;
+    margin: 0 auto;
+}
+
+
+input#button {
+    display: block;
+    margin: 0 auto;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.border {
+	border: 3px solid silver;
+}
+
+dl {
+	margin-left : auto ; margin-right : auto ;
 }

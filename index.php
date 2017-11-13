@@ -134,6 +134,8 @@ if(isset($errors)){
 </form>
 </div>
 
+<hr class="border">
+
 <form method="post">
 	<span>現在ハマっているもの:</span>
 	<select  action="index.php" name="category_list">
@@ -212,11 +214,12 @@ if(isset($errors)){
 	$stmt = $dbh->prepare($sql);
 	$stmt->execute();
 	$dbh = null;
-
+	print('<div id="list">');
+	print('<p class="center">');
 	print('<dl>');
 	print('<div>');
 	while($task = $stmt->fetch(PDO::FETCH_ASSOC)){
-    	print('<div id="list">');
+    	
 	    //if ($task['done'] === '0') {
 		    print '<dt>';
 		    print $task["name"];
@@ -282,6 +285,7 @@ if(isset($errors)){
 }
 	print('</div)');
 	print('</dl>');
+	print('</p>');
 ?>
 </body>
 </html>
