@@ -124,6 +124,7 @@ if(isset($errors)){
 		<option value="3">アニメ、ゲーム</option>
 		<option value="4">スポーツ</option>
 		<option value="5">ファッション</option>
+		<option value="6">その他</option>
 		</select>
     </li>
 
@@ -146,6 +147,7 @@ if(isset($errors)){
 			<option value="3">アニメ、ゲーム</option>
 			<option value="4">スポーツ</option>
 			<option value="5">ファッション</option>
+			<option value="6">その他</option>
 	</select>
 	<input type="submit" value="表示"/>
 </form>
@@ -254,6 +256,10 @@ if(isset($errors)){
 
 		    	case '5':
 		    		print "ファッション";
+		    		break;
+
+		    	case '6':
+		    		print "その他";
 		    		break;
 		    }
 		    print '</dd>';
